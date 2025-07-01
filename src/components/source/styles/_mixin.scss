@@ -1,0 +1,84 @@
+@use "sass:map";
+@use "sass:color";
+
+$colors: (
+
+    nf_black: #121212,
+);
+
+@mixin fourk {
+    @media (min-width: 1441px) {
+        @content;
+    }
+}
+
+@mixin desktop {
+    @media (max-width: 1440px) {
+        @content;
+    }
+}
+
+@mixin laptop {
+    @media (max-width: 1240px) {
+        @content;
+    }
+}
+
+@mixin from-mini {
+    @media (min-width: 1024px) {
+        @content;
+    }
+}
+
+@mixin mini {
+    @media (max-width: 1024px) {
+        @content;
+    }
+}
+
+@mixin tablet {
+    @media (max-width: 900px) {
+        @content;
+    }
+}
+
+@mixin mobile {
+    @media (max-width: 768px) {
+        @content;
+    }
+}
+
+@mixin ls {
+    @media (max-width: 624px) {
+        @content;
+    }
+}
+
+@mixin sm {
+    @media (max-width: 480px) {
+        @content;
+    }
+}
+
+@mixin xs {
+    @media (max-width: 350px) {
+        @content;
+    }
+}
+
+@function colormap($color-name) {
+    @if map.has-key($colors, $color-name) {
+        @return map.get($colors, $color-name);
+    }
+
+    @else {
+        @error "Color `#{$color-name}` not found in the colors map.";
+    }
+}
+
+.contain {
+    max-width: 1600px;
+    margin-left:  auto;
+    margin-right:  auto;
+    padding: 2rem;
+}

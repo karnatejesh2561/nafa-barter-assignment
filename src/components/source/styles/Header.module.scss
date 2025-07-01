@@ -1,0 +1,111 @@
+@use '../styles/mixin' as *;
+
+.nf_header {
+    background: linear-gradient(to right, #0f172a, #1e293b);
+    color: white;
+    padding: 1rem 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+
+    &__container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    &__title {
+        display: inline-flex;
+        align-items: center;
+        font-size: 1.5rem;
+        gap: 1rem;
+
+        
+        p {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            
+            @include sm {
+                font-size: 1rem;
+                flex-direction: column-reverse;
+                align-items: flex-start;
+            }
+        }
+    }
+
+    &__status {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 9999px;
+
+
+        &__live {
+            background-color: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+
+        &__disconnected {
+            background-color: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        svg {
+            height: .825rem;
+            width: .825rem;
+        }
+    }
+
+    &__symbol {
+        text-align: right;
+
+        &__name {
+            font-size: 0.75rem;
+            color: #d1d5db;
+        }
+
+        &__price {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+
+            .nf_price {
+                font-size: 1.5rem;
+                font-family: monospace;
+                font-weight: bold;
+
+                @include sm {
+                    font-size: 1.2rem;
+                }
+            }
+        }
+
+        &__change {
+            text-align: right;
+
+            &__up {
+                color: #22c55e;
+                font-size: 0.75rem;
+            }
+
+            &__down {
+                color: #ef4444;
+                font-size: 0.75rem;
+            }
+
+            &__percent {
+                font-size: 0.75rem;
+                color: #9ca3af;
+            }
+        }
+    }
+}

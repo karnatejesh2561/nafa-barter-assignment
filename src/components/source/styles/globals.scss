@@ -1,0 +1,141 @@
+@use './_mixin' as *;
+
+:root {
+    font-size: 18px;
+
+    @include desktop {
+        font-size: 16px;
+    }
+
+    @include mini {
+        font-size: 15.5px;
+    }
+
+    @include mobile {
+        font-size: 14px;
+    }
+
+    @include sm {
+        font-size: 13px;
+    }
+
+    @include xs {
+        font-size: 12px;
+    }
+}
+
+html,
+body {
+    padding: 0;
+    margin: 0;
+    scroll-behavior: smooth;
+    height: 100%;
+    width: 100%;
+    font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
+    background-color: #fff;
+}
+
+html {
+
+    body {
+
+        * {
+            letter-spacing: 0;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p,
+        a,
+        ul li,
+        label {
+            margin-bottom: 0;
+        }
+
+        input,
+        button,
+        textarea {
+    
+        }
+
+        input {
+
+            &:focus,
+            &:active {
+                box-shadow: 0;
+                outline: 0;
+            }
+        }
+
+        a {
+            text-decoration: none !important;
+        }
+
+        ul {
+            padding: 0;
+            margin: 0;
+            list-style-type: none;
+        }
+
+        img {
+            width: 100%;
+            max-width: 100%;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        button,
+        button:active,
+        button:focus,
+        input,
+        input:active,
+        input:focus,
+        textarea,
+        textarea:active,
+        textarea:focus,
+        input[type=submit]:active,
+        input[type=submit]:focus {
+            box-shadow: none;
+            border: 0;
+            outline: 0;
+            padding: 0;
+            background-color: transparent;
+            
+            resize: none;
+        }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            appearance: none;
+            margin: 0;
+        }
+
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus,
+        input:-webkit-autofill:active {
+            transition: "color 9999s ease-out, background-color 9999s ease-out";
+            transition-delay: 9999s;
+        }
+    }
+}
+
+
+.recharts-wrapper {
+    border: none !important;
+    outline: none !important;
+}
+
+.nf_app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+}
