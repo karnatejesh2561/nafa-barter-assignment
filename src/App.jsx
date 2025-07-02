@@ -9,13 +9,12 @@ import { fetchSymbols } from "./data/DataFetcher";
 /** Main Export */
 function App() {
 
-    const [data, setData] = useState([]);
-    const [isRunning, setIsRunning] = useState(true);
-    const [currentSymbol, setCurrentSymbol] = useState('');
     const [symbols, setSymbols] = useState([]);
-    const [symbolDetails, setSymbolDetails] = useState({});
-
-    console.log("symbolDetails", symbolDetails, currentSymbol)
+    const [chartState, setChartState] = useState({
+        isRunning: true,
+        currentSymbol: '',
+        data: []
+    });
 
     // Fetch symbols on mount
     useEffect(() => {
@@ -23,28 +22,15 @@ function App() {
             const fetchedSymbols = await fetchSymbols();
 
             if (fetchedSymbols.length === 0) {
-                // Fallback if API fails
                 const fallbackSymbols = ['EURUSD', 'GBPUSD', 'USDJPY', 'AUDUSD'];
                 setSymbols(fallbackSymbols);
-                setSymbolDetails({
-                    EURUSD: { name: 'Euro / US Dollar' },
-                    GBPUSD: { name: 'British Pound / US Dollar' },
-                    USDJPY: { name: 'US Dollar / Japanese Yen' },
-                    AUDUSD: { name: 'Australian Dollar / US Dollar' },
-                });
-                setCurrentSymbol('EURUSD');
+                setChartState(prev => ({ ...prev, currentSymbol: 'EURUSD' }));
                 return;
             }
 
             const symbolNames = fetchedSymbols.map(item => item.symbol);
-            const symbolMap = {};
-            fetchedSymbols.forEach(item => {
-                symbolMap[item.symbol] = { name: item.description };
-            });
-
             setSymbols(symbolNames);
-            setSymbolDetails(symbolMap);
-            setCurrentSymbol(symbolNames[0]); // Set the first symbol by default
+            setChartState(prev => ({ ...prev, currentSymbol: symbolNames[0] }));
         };
 
         getSymbols();
@@ -53,53 +39,69 @@ function App() {
     // Simulated price generator
     useEffect(() => {
         let interval;
-        if (isRunning && currentSymbol) {
+        if (chartState.isRunning && chartState.currentSymbol) {
             interval = setInterval(() => {
                 const newPoint = {
                     time: new Date().toLocaleTimeString(),
                     price: generateRandomPrice()
                 };
-                setData(prev => [...prev.slice(-50), newPoint]);
+                setChartState(prev => ({
+                    ...prev,
+                    data: [...prev.data.slice(-50), newPoint]
+                }));
             }, 500);
         }
         return () => clearInterval(interval);
-    }, [isRunning, currentSymbol]);
+    }, [chartState.isRunning, chartState.currentSymbol]);
 
-    const handlePause = () => setIsRunning(false);
-    const handleResume = () => { if (currentSymbol) setIsRunning(true); };
-    const handleClear = () => setData([]);
-    const handleSwitchSymbol = (symbol) => {
-        setCurrentSymbol(symbol);
-        setData([]); // Clear data on symbol switch
-        setIsRunning(false);
+    const handlePause = () => setChartState(prev => ({ ...prev, isRunning: false }));
+
+    const handleResume = () => {
+        if (chartState.currentSymbol) {
+            setChartState(prev => ({ ...prev, isRunning: true }));
+        }
     };
-    const handleToggle = () => { if (currentSymbol) setIsRunning(prev => !prev); };
 
-    // Calculate current price and price change
-    const currentPrice = data.length > 0 ? data[data.length - 1].price : 0;
-    const previousPrice = data.length > 1 ? data[data.length - 2].price : 0;
+    const handleClear = () => setChartState(prev => ({ ...prev, data: [] }));
+
+    const handleSwitchSymbol = (symbol) => {
+        setChartState({
+            currentSymbol: symbol,
+            isRunning: false,
+            data: []
+        });
+    };
+
+    const handleToggle = () => {
+        if (chartState.currentSymbol) {
+            setChartState(prev => ({ ...prev, isRunning: !prev.isRunning }));
+        }
+    };
+
+    const currentPrice = chartState.data.length > 0 ? chartState.data[chartState.data.length - 1].price : 0;
+    const previousPrice = chartState.data.length > 1 ? chartState.data[chartState.data.length - 2].price : 0;
     const priceChange = currentPrice - previousPrice;
 
     return (
         <div className="nf_app">
-            {currentSymbol && (
+            {chartState.currentSymbol && (
                 <>
                     <Header
-                        symbol={currentSymbol}
+                        symbol={chartState.currentSymbol}
                         currentPrice={currentPrice}
                         priceChange={priceChange}
-                        isConnected={isRunning}
+                        isConnected={chartState.isRunning}
                     />
-                    <ChartComponent chartData={data} />
+                    <ChartComponent chartData={chartState.data} />
                     <FooterComponent
-                        isRunning={isRunning}
+                        isRunning={chartState.isRunning}
                         onPause={handlePause}
                         onResume={handleResume}
                         onClear={handleClear}
                         onSwitch={handleSwitchSymbol}
-                        currentSymbol={currentSymbol}
+                        currentSymbol={chartState.currentSymbol}
                         onToggle={handleToggle}
-                        dataPoints={data.length}
+                        dataPoints={chartState.data.length}
                         symbols={symbols}
                     />
                 </>

@@ -39,7 +39,6 @@ const FooterComponent = ({
                         <span>Clear</span>
                     </button>
                 </div>
-
                 <div className={styles.nf_footer__info}>
                     <div className={styles.nf_footer__datapoints}>
                         Data Points: <span className={styles.nf_footer__count}>{dataPoints}</span>

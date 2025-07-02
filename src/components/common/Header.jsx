@@ -16,18 +16,17 @@ const Header = ({ symbol, symbolConfig, currentPrice, priceChange, isConnected }
             <div className={styles.nf_header__container}>
                 <div className={styles.nf_header__title}>
                     <TrendingUp />
-                    <p>
+                    <div>
                         Real-Time Symbol Chart Dashboard
-                        <div
+                        <p
                             className={`${styles.nf_header__status} ${isConnected ? styles.nf_header__status__live : styles.nf_header__status__disconnected
                                 }`}
                         >
                             <Activity  />
                             <span>{isConnected ? "LIVE" : "DISCONNECTED"}</span>
-                        </div>
-                    </p>
+                        </p>
+                    </div>
                 </div>
-
 
                 <div className={styles.nf_header__symbol}>
                     <div className={styles.nf_header__symbol__name}>
